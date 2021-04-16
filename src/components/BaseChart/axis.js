@@ -1,4 +1,3 @@
-import React, { forwardRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import classnames from 'classnames';
 
@@ -7,15 +6,12 @@ function drawAxis(config) {
     margin,
     width,
     height,
-    drawXAxis,
-    drawYAxis,
     drawXGridlines,
     drawYGridlines,
     xLabel,
     yLabel,
     axisClass,
     gridClass,
-    data,
     svgRef,
     xScale,
     yScale,

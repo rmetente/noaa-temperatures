@@ -1,4 +1,4 @@
-import React, { createRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import classnames from 'classnames';
 import drawAxis from './axis';
@@ -15,7 +15,6 @@ const BaseChart = (drawChart, extraProps) => {
 
     const { margin, width, height, svgContainerClass } = svgProps;
 
-    const yMinValue = d3.min(data, (d) => d.value);
     const yMaxValue = d3.max(data, (d) => d.value);
 
     const xMinValue = d3.min(data, (d) => d.label);
@@ -55,6 +54,7 @@ const BaseChart = (drawChart, extraProps) => {
     }
 
     function draw() {
+      // eslint-disable-next-line no-unused-vars
       const svg = d3
         .select(svgRef.current)
         .attr('width', width + margin.left + margin.right)

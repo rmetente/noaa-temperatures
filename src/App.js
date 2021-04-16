@@ -1,60 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import LineChart from './components/LineChart';
-import AreaChart from './components/AreaChart';
+import _ from 'lodash';
 import BarChart from './components/BarChart';
-import PieChart from './components/PieChart';
-import DonutChart from './components/DonutChart';
-import ScatterPlot from './components/ScatterPlot';
-import HeatMap from './components/HeatMap';
 import './App.css';
 
-const heatMapdata = [];
-for (let i = 0; i < 20; i++) {
-  for (let j = 0; j < 20; j++) {
-    const depth = Math.floor(Math.random() * 20 + 3);
-    heatMapdata.push({
-      label: i,
-      value: j,
-      depth,
-      tooltipContent: `<b>x: </b>${i}<br><b>y: </b>${j}<br><b>depth: </b>${depth}`,
-    });
-  }
-}
 function App() {
-  const [data, setData] = useState([]);
+  const [newData, setNewData] = useState([]);
 
   useEffect(() => {
-    regenerateData();
-  }, []);
+    regenerateNewData(() => console.log(newData), [newData]);
+  });
 
-  function regenerateData() {
+  function regenerateNewData() {
+    const csvData = [{'description':{'title':'Global Land and Ocean Temperature Anomalies, October','units':'Degrees Celsius','base_period':'1901-2000','missing':-999},'data':{'1880':'-0.24','1881':'-0.30','1882':'-0.24','1883':'-0.23','1884':'-0.28','1885':'-0.21','1886':'-0.32','1887':'-0.33','1888':'0.02','1889':'-0.27','1890':'-0.36','1891':'-0.30','1892':'-0.29','1893':'-0.26','1894':'-0.30','1895':'-0.12','1896':'0.00','1897':'-0.17','1898':'-0.37','1899':'-0.10','1900':'0.07','1901':'-0.34','1902':'-0.30','1903':'-0.51','1904':'-0.43','1905':'-0.26','1906':'-0.29','1907':'-0.30','1908':'-0.51','1909':'-0.37','1910':'-0.44','1911':'-0.31','1912':'-0.54','1913':'-0.31','1914':'-0.11','1915':'-0.24','1916':'-0.28','1917':'-0.33','1918':'-0.12','1919':'-0.24','1920':'-0.23','1921':'-0.06','1922':'-0.27','1923':'-0.18','1924':'-0.31','1925':'-0.16','1926':'-0.07','1927':'0.01','1928':'-0.16','1929':'-0.14','1930':'-0.02','1931':'0.03','1932':'-0.10','1933':'-0.20','1934':'-0.04','1935':'-0.03','1936':'-0.02','1937':'0.10','1938':'0.07','1939':'0.00','1940':'0.16','1941':'0.42','1942':'0.07','1943':'0.26','1944':'0.32','1945':'0.27','1946':'0.00','1947':'0.05','1948':'-0.06','1949':'-0.06','1950':'-0.16','1951':'0.13','1952':'0.01','1953':'0.12','1954':'-0.04','1955':'-0.12','1956':'-0.19','1957':'0.03','1958':'0.07','1959':'0.00','1960':'0.06','1961':'-0.02','1962':'0.12','1963':'0.23','1964':'-0.25','1965':'0.02','1966':'-0.07','1967':'0.15','1968':'0.06','1969':'0.09','1970':'-0.02','1971':'-0.08','1972':'0.10','1973':'0.07','1974':'-0.07','1975':'-0.12','1976':'-0.19','1977':'0.12','1978':'0.07','1979':'0.29','1980':'0.18','1981':'0.18','1982':'0.18','1983':'0.24','1984':'0.14','1985':'0.15','1986':'0.22','1987':'0.35','1988':'0.31','1989':'0.29','1990':'0.43','1991':'0.29','1992':'0.05','1993':'0.23','1994':'0.42','1995':'0.44','1996':'0.21','1997':'0.64','1998':'0.49','1999':'0.35','2000':'0.32','2001':'0.52','2002':'0.49','2003':'0.74','2004':'0.60','2005':'0.68','2006':'0.68','2007':'0.56','2008':'0.67','2009':'0.64','2010':'0.63','2011':'0.61','2012':'0.70','2013':'0.67','2014':'0.76','2015':'1.04','2016':'0.79','2017':'0.81','2018':'0.93','2019':'0.95','2020':'0.83'}}];
     const chartData = [];
-    for (let i = 0; i < 20; i++) {
-      const value = Math.floor(Math.random() * i + 3);
-      chartData.push({
-        label: i,
-        value,
-        tooltipContent: `<b>x: </b>${i}<br><b>y: </b>${value}`,
-      });
+
+    for (const key in csvData[0].data) {
+      let decade = _.endsWith(key, '0');
+      if (decade) {
+        chartData.push({
+          label: key,
+          value: key,
+          tooltipContent: `<b>x: </b>${csvData[0].data[key]}<br><b>y: </b>${key}`,
+        });
+      }
     }
-    setData(chartData);
+    
+    setNewData(chartData);
   }
+
   return (
     <div className="App">
-      <button onClick={regenerateData}>Change Data</button>
-      <HeatMap
-        svgProps={{
-          margin: { top: 80, bottom: 80, left: 80, right: 80 },
-          width: 400,
-          height: 400,
-        }}
-        axisProps={{
-          xLabel: 'X Axis',
-          yLabel: 'Y Axis',
-        }}
-        data={heatMapdata}
-        strokeWidth={4}
-      />
+      <button onClick={regenerateNewData}>Change Data</button>
       <BarChart
         svgProps={{
           margin: { top: 80, bottom: 80, left: 80, right: 80 },
@@ -65,35 +41,9 @@ function App() {
           xLabel: 'X Axis',
           yLabel: 'Y Axis',
         }}
-        data={data}
+        data={newData}
         strokeWidth={4}
       />
-      {/* <ScatterPlot
-        svgProps={{
-          margin: { top: 80, bottom: 80, left: 80, right: 80 },
-          width: 600,
-          height: 400,
-        }}
-        axisProps={{
-          xLabel: 'X Axis',
-          yLabel: 'Y Axis',
-        }}
-        data={data}
-        pointWidth={4}
-      />
-      <AreaChart
-        svgProps={{
-          margin: { top: 80, bottom: 80, left: 80, right: 80 },
-          width: 600,
-          height: 400,
-        }}
-        axisProps={{
-          xLabel: 'X Axis',
-          yLabel: 'Y Axis',
-        }}
-        data={data}
-        strokeWidth={4}
-      /> */}
     </div>
   );
 }

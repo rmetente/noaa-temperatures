@@ -10,9 +10,7 @@ function drawBarChart(props) {
     data,
     xScale,
     yScale,
-    width,
     height,
-    margin,
     barClass,
   } = props;
 
@@ -23,7 +21,7 @@ function drawBarChart(props) {
     .data(data)
     .enter().append('rect')
     .attr('class', classnames(['bar-chart__bar', barClass]))
-    .attr('x', (d) => xScale(d.label))
+    .attr('x', (d) => xScale(d.value))
     .attr('width', xScale.bandwidth())
     .attr('y', (d) => yScale(d.value))
     .attr('height', (d) => height - yScale(d.value));
